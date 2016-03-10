@@ -68,6 +68,8 @@ void main(void) {
     if (generateur() == 15) {
         printf("Ok 1");
     }
-    
+    if (generateur() == 19) {
+        printf("Ok 2");
+    }
     while(1);
 }
