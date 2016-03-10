@@ -51,8 +51,9 @@ void initialiseEUSART() {
     TXSTAbits.TXEN = 1;  // Active l'émetteur.
 }
 
+char sinus[] = {15,19,23,27,29,30,29,27,23,19,15,10,6,2,0,0,0,2,6,10,14};
+
 char generateur() {
-    static char sinus[] = {15,19,23,27,29,30,29,27,23,19,15,10,6,2,0,0,0,2,6,10,14};
     static unsigned short i=0;
     
     if (i == 21){
@@ -67,7 +68,7 @@ char generateur() {
  * Point d'entrée du programme.
  */
 void main(void) {
-    unsigned char n;
+    unsigned char n, m;
     unsigned char i;
     
     initialiseEUSART();
@@ -88,5 +89,21 @@ void main(void) {
     if (generateur() == 15) {
         printf("Ok 22\r\n");
     }
-    while(1);
+    
+    ANSELA = 0;
+    ANSELB = 0;
+    ANSELC = 0;
+    TRISA = 0;
+    
+    while(1) {
+        for (n = 0; n < 20; n++) {
+            for (m = 0; m < 32; m++) {
+                if (m < sinus[n]) {
+                    PORTAbits.RA7 = 1;
+                } else {
+                    PORTAbits.RA7 = 0;
+                }
+            }
+        }
+    }
 }
