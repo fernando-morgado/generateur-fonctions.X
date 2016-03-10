@@ -52,11 +52,12 @@ void initialiseEUSART() {
 }
 
 char generateur() {
-    char sinus[] = {15,19,23,27,29,30,29,27,23,19,15,10,6,2,0,0,0,2,6,10,14};
+    static char sinus[] = {15,19,23,27,29,30,29,27,23,19,15,10,6,2,0,0,0,2,6,10,14};
     static unsigned short i=0;
     
-    //PORTA = sinus[i];
-  //  i++;        
+    if (i == 21){
+        i = 0;
+    }
     
     return sinus[i++] ;
 }
@@ -72,18 +73,20 @@ void main(void) {
     initialiseEUSART();
 
     if (generateur() == 15) {
-        printf("Ok 1");
+        printf("Ok 1\r\n");
     }
     if (generateur() == 19) {
-        printf("Ok 2");
+        printf("Ok 2\r\n");
     }
-    for(i=2;i<21;i++)
+    for(i=2;i<20;i++)
     {
         generateur() ;
     }
     if (generateur() == 14) {
-        printf("Ok 21"); 
+        printf("Ok 21\r\n"); 
     }
-    
+    if (generateur() == 15) {
+        printf("Ok 22\r\n");
+    }
     while(1);
 }
