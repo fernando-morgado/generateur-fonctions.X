@@ -1,5 +1,6 @@
 #include <xc.h>
 #include <stdio.h>
+#include <pic18f25k22.h>
 
 /**
  * Bits de configuration:
@@ -63,7 +64,40 @@ char generateur() {
     return sinus[i++] ;
 }
 
+void interrupt interruptionsHautePriorite() {
+    if (INTCONbits.TMR0IF) {
+        INTCONbits.TMR0IF = 0;
+        TMR0 = 25540;
+    }
+}
 
+void initialisePeripheriques() {
+    
+    // Configuration de l'horloge à 8MHz:
+    OSCCONbits.IRCF = 6;
+    OSCCONbits.SCS = 0;
+    OSCTUNEbits.PLLEN = 0;
+    
+    // Temporisateur 0:
+    T0CONbits.T08BIT = 0;
+    T0CONbits.T0CS = 0;
+    T0CONbits.PSA = 1;
+    T0CONbits.TMR0ON = 1;
+    
+    INTCONbits.TMR0IE = 1;
+    INTCON2bits.TMR0IP = 1;
+    
+    // Active les interruptions:
+    RCONbits.IPEN = 1;
+    INTCONbits.GIEH = 1;
+    INTCONbits.GIEL = 1;
+        
+    
+    ANSELA = 0;
+    ANSELB = 0;
+    ANSELC = 0;
+    TRISA = 0;
+}
 /**
  * Point d'entrée du programme.
  */
@@ -90,10 +124,7 @@ void main(void) {
         printf("Ok 22\r\n");
     }
     
-    ANSELA = 0;
-    ANSELB = 0;
-    ANSELC = 0;
-    TRISA = 0;
+    initialisePeripheriques();
     
     while(1) {
         for (n = 0; n < 20; n++) {
