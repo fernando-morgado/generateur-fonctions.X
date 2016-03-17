@@ -57,7 +57,7 @@ void initialiseTests() {
  */
 int assertEquals(const char *testId, int value, int expectedValue) {
     if (value != expectedValue) {
-        printf("%s: Valeur obtenue %d - Valeur attendue %d", testId, value, expectedValue);
+        printf("%s: Valeur obtenue %d - Valeur attendue %d\r\n", testId, value, expectedValue);
         return 1;
     }
     return 0;
